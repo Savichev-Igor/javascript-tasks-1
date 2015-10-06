@@ -4,19 +4,18 @@ var minutes = parseInt(process.argv[3], 10);
 /**
  * Перевод арабского числа в римскую нотацию
  * @author Savi
- * @param time
- * @returns
+ * @param {number} hours, {number} minutes
 */
 function RomanTime(hours, minutes){
     /**
      * Валидация входных данных
      * @param {number} hours
      * @private
-     * @return {string} Wrong input || {number} hours
+     * @return {string||number} 'Время указано неверно'||hours
      */
     RomanTime.prototype._validate_hours = function (hours){
         if (hours < 0 || hours > 23){
-            return 'Время указано не верно';
+            return 'Время указано неверно';
         }
         else{
             return hours;
@@ -27,11 +26,11 @@ function RomanTime(hours, minutes){
      * Валидация входных данных
      * @param {number} hours
      * @private
-     * @returns {string} Wrong input || {number} minutes
+     * @returns {string||number} 'Время указано неверно'||minutes
      */
     RomanTime.prototype._validate_minutes = function (minutes){
         if (minutes < 0 || minutes > 59){
-            return 'Время указано не верно';
+            return 'Время указано неверно';
         }
         else{
             return minutes;
@@ -95,15 +94,14 @@ function RomanTime(hours, minutes){
         }
         return roman_number;
     };
-
     /**
      * Получение времени в римской нотации
      * @private
-     * @returns {string} 'Check your input !' || {string} this.roman_hours + {string} this.roman_minutes
+     * @returns {string||string} 'Время указано неверно'||this.roman_hours+this.roman_minutes
      */
     RomanTime.prototype._translate_to_roman_time = function (){
-        if ((this._hours == 'Время указано не верно') || (this._minutes == 'Время указано не верно')){
-            return 'Время указано не верно';
+        if ((this._hours == 'Время указано неверно') || (this._minutes == 'Время указано неверно')){
+            return 'Время указано неверно';
         }
         else{
             this.roman_hours = this._get_roman_number(this._hours);
@@ -116,7 +114,7 @@ function RomanTime(hours, minutes){
 
     /**
      * Простой геттер метод для вывода
-     * @returns {stirng} 'Check your input !' || {string} roman_time
+     * @returns {stirng||string} 'Время указано неверно'||roman_time
      */
     RomanTime.prototype.get_roman_time = function (){
         return this.roman_time;
