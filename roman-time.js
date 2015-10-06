@@ -13,8 +13,8 @@ function RomanTime(hours, minutes){
      * @private
      * @return {string||number} 'Время указано неверно'||hours
      */
-    RomanTime.prototype._validate_hours = function (hours){
-        if (hours < 0 || hours > 23){
+    this._validate_hours = function (hours){
+        if (hours < 0 || hours > 23 || isNaN(hours)){
             return 'Время указано неверно';
         }
         else{
@@ -28,8 +28,8 @@ function RomanTime(hours, minutes){
      * @private
      * @returns {string||number} 'Время указано неверно'||minutes
      */
-    RomanTime.prototype._validate_minutes = function (minutes){
-        if (minutes < 0 || minutes > 59){
+    this._validate_minutes = function (minutes){
+        if (minutes < 0 || minutes > 59 || isNaN(minutes)){
             return 'Время указано неверно';
         }
         else{
@@ -40,8 +40,8 @@ function RomanTime(hours, minutes){
     /** @private */ this._hours = this._validate_hours(hours);
     /** @private */ this._minutes = this._validate_minutes(minutes);
 
-    /** @private */ this.roman_hours;
-    /** @private */ this.roman_minutes;
+    /** @private */ this._roman_hours;
+    /** @private */ this._roman_minutes;
 
     /**
      * Перевод арабской цифры (1-60) в римскую нотацию
@@ -49,7 +49,7 @@ function RomanTime(hours, minutes){
      * @private
      * @returns {string} roman_number
      */
-    RomanTime.prototype._get_roman_number = function(number){
+    this._get_roman_number = function(number){
         var dictionary = {
                             0: '-',
                             1: 'I',
@@ -97,34 +97,35 @@ function RomanTime(hours, minutes){
     /**
      * Получение времени в римской нотации
      * @private
-     * @returns {string||string} 'Время указано неверно'||this.roman_hours+this.roman_minutes
+     * @returns {string||string} 'Время указано неверно'||this._roman_hours+this._roman_minutes
      */
-    RomanTime.prototype._translate_to_roman_time = function (){
+    this._translate_to_roman_time = function (){
         if ((this._hours == 'Время указано неверно') || (this._minutes == 'Время указано неверно')){
             return 'Время указано неверно';
         }
         else{
-            this.roman_hours = this._get_roman_number(this._hours);
-            this.roman_minutes = this._get_roman_number(this._minutes);
-            return [this.roman_hours, this.roman_minutes].join(':');
+            this._roman_hours = this._get_roman_number(this._hours);
+            this._roman_minutes = this._get_roman_number(this._minutes);
+            return [this._roman_hours, this._roman_minutes].join(':');
         }
     };
 
-    /** @private */ this.roman_time = this._translate_to_roman_time();
+    /** @private */ this._roman_time;
 
     /**
      * Простой геттер метод для вывода
      * @returns {stirng||string} 'Время указано неверно'||roman_time
      */
-    RomanTime.prototype.get_roman_time = function (){
-        return this.roman_time;
+    this.get_roman_time = function(){
+        this._roman_time = this._translate_to_roman_time();
+        return this._roman_time;
     };
 
     /**
      * Рисуем в ASCII нотации полученное время, если это возможно
      */
     // Очевидно, что окошко придётся немного ресайзить, чтобы получился красивый вывод
-    RomanTime.prototype.draw_roman_time = function (){
+    this.draw_roman_time = function (){
         var ASCII = {
                     '-': [
                             '              ',
@@ -187,14 +188,14 @@ function RomanTime(hours, minutes){
                             ' (_)(_)(_)(_)  '
                     ],
                 };
-        if (this.roman_time == 'Время указано не верно'){
+        if (this._roman_time === undefined || this._roman_time == 'Время указано неверно'){
             console.log('Я не могу это нарисовать =(...');
         }
         else{
             for (var i = 0; i < 8; i++){
                 var temp_figure = '';
-                for (var k = 0; k < this.roman_time.length; k++){
-                    temp_figure += ASCII[this.roman_time[k]][i];
+                for (var k = 0; k < this._roman_time.length; k++){
+                    temp_figure += ASCII[this._roman_time[k]][i];
                 }
                 console.log(temp_figure);
             }
